@@ -1,0 +1,57 @@
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.csproj.AssemblyReference.cache
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\MainWindow.g.cs
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\App.g.cs
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE_MarkupCompile.cache
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE_MarkupCompile.lref
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\bin\Debug\net9.0-windows\ChatBot_POE.exe
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\bin\Debug\net9.0-windows\ChatBot_POE.deps.json
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\bin\Debug\net9.0-windows\ChatBot_POE.runtimeconfig.json
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\bin\Debug\net9.0-windows\ChatBot_POE.dll
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\bin\Debug\net9.0-windows\ChatBot_POE.pdb
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\bin\Debug\net9.0-windows\Microsoft.Win32.SystemEvents.dll
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\bin\Debug\net9.0-windows\System.Drawing.Common.dll
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\bin\Debug\net9.0-windows\System.Private.Windows.Core.dll
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\bin\Debug\net9.0-windows\System.Windows.Extensions.dll
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\bin\Debug\net9.0-windows\runtimes\win\lib\net9.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\bin\Debug\net9.0-windows\runtimes\win\lib\net9.0\System.Windows.Extensions.dll
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\MainWindow.baml
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.g.resources
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.AssemblyInfoInputs.cache
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.AssemblyInfo.cs
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.csproj.CoreCompileInputs.cache
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_.B69D2AC4.Up2Date
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.dll
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\refint\ChatBot_POE.dll
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.pdb
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.genruntimeconfig.cache
+C:\Users\enhle\OneDrive\Documents\C# projects\ChatBot_POE\obj\Debug\net9.0-windows\ref\ChatBot_POE.dll
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\bin\Debug\net9.0-windows\ChatBot_POE.exe
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\bin\Debug\net9.0-windows\ChatBot_POE.deps.json
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\bin\Debug\net9.0-windows\ChatBot_POE.runtimeconfig.json
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\bin\Debug\net9.0-windows\ChatBot_POE.dll
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\bin\Debug\net9.0-windows\ChatBot_POE.pdb
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\bin\Debug\net9.0-windows\Microsoft.Win32.SystemEvents.dll
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\bin\Debug\net9.0-windows\System.Drawing.Common.dll
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\bin\Debug\net9.0-windows\System.Private.Windows.Core.dll
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\bin\Debug\net9.0-windows\System.Windows.Extensions.dll
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\bin\Debug\net9.0-windows\runtimes\win\lib\net9.0\Microsoft.Win32.SystemEvents.dll
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\bin\Debug\net9.0-windows\runtimes\win\lib\net9.0\System.Windows.Extensions.dll
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.csproj.AssemblyReference.cache
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\MainWindow.g.cs
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\App.g.cs
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE_MarkupCompile.cache
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE_MarkupCompile.lref
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\MainWindow.baml
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.g.resources
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.AssemblyInfoInputs.cache
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.AssemblyInfo.cs
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.csproj.CoreCompileInputs.cache
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.sourcelink.json
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_.B69D2AC4.Up2Date
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.dll
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\refint\ChatBot_POE.dll
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.pdb
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ChatBot_POE.genruntimeconfig.cache
+C:\Users\enhle\OneDrive\Desktop\GitHub\PROG6221-POE_part3-Mokholo-Enhle-Imbali\ChatBot_POE\obj\Debug\net9.0-windows\ref\ChatBot_POE.dll

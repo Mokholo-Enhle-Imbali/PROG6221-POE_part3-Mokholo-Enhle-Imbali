@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "uDGdsDclaNA=",
+  "success": true,
+  "projectFilePath": "C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\PROG6221-POE_part3-Mokholo-Enhle-Imbali\\ChatBot_POE\\ChatBot_POE.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\enhle\\.nuget\\packages\\microsoft.win32.systemevents\\9.0.6\\microsoft.win32.systemevents.9.0.6.nupkg.sha512",
+    "C:\\Users\\enhle\\.nuget\\packages\\system.drawing.common\\9.0.3\\system.drawing.common.9.0.3.nupkg.sha512",
+    "C:\\Users\\enhle\\.nuget\\packages\\system.windows.extensions\\9.0.3\\system.windows.extensions.9.0.3.nupkg.sha512"
+  ],
+  "logs": []
+}
