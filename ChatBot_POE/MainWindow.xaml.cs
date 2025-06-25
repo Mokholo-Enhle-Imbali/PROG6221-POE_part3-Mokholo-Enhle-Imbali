@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media.Media3D;
@@ -13,7 +14,8 @@ namespace ChatBot_POE
         private LibraryLong libraryLong; // Content for longer explanations
         private SentimentLibrary sentimentLibrary; // Sentiment detection
         private string userName;
-        private string filepath = "C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\PROG6221-POE_part3-Mokholo-Enhle-Imbali\\UserPreferences.txt";
+        private string filePathPreferences = "C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\PROG6221-POE_part3-Mokholo-Enhle-Imbali\\UserPreferences.txt";
+        private string filePathTask = "C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\PROG6221-POE_part3-Mokholo-Enhle-Imbali\\Tasks.txt";
         Image image = new Image();
         AudioPlayer audioPlayer = new AudioPlayer();
         private bool waitingForQuestion = false;
@@ -22,6 +24,14 @@ namespace ChatBot_POE
         private bool waitingForConcernResponse = false;
         bool waitForTopic = false;
         bool waitForMoreTopic=false;
+        private bool waitForTaskTitle = false;
+        private bool waitForTaskDescription = false;
+        private bool waitForTaskReminder = false;
+        private bool waitForTaskReminderTime = false;
+        private string taskTitle = "";
+        private string taskDescription = "";
+        private string taskTime = "";
+        private bool waitForMoreTasks = false;
         public MainWindow()
         {
             InitializeComponent();
@@ -54,42 +64,53 @@ namespace ChatBot_POE
 
             AppendToChat($"{userInput}");
 
-            if (waitingForQuestion)
+            if (waitingForQuestion==true)
             {
                 ProcessQuestion(userInput);
                 return;
             }
 
-            if (waitingForResponse)
+            if (waitingForResponse==true)
             {
                 ProcessResponse(userInput);
                 return;
             }
 
-            if (waitingForConcern)
+            if (waitingForConcern == true)
             {
                 ProcessConcern(userInput);
                 return;
             }
 
-            if (waitingForConcernResponse)
+            if (waitingForConcernResponse == true)
             {
                 ProcessConcernResponse(userInput);
                 return;
             }
 
-            if (waitForTopic)
+            if (waitForTopic == true)
             {
                 ProcessTopic(userInput);
                 return;
             }
 
-            if (waitForMoreTopic) 
+            if (waitForMoreTopic == true) 
             {
                 ProcessMoreTopic(userInput);
                 return;
             }
 
+            if (waitForTaskTitle || waitForTaskDescription || waitForTaskReminder || waitForTaskReminderTime)
+            {
+                ProcessTask(userInput);
+                return;
+            }
+
+            if (waitForMoreTasks==true)
+            {
+                ProcessMoreTasks(userInput);
+                return;
+            }
 
             if (string.IsNullOrEmpty(userName))
             {
@@ -134,7 +155,7 @@ namespace ChatBot_POE
                 return;
             }
 
-            if (Regex.IsMatch(userInput, @"\b(remember|don't forget|recollect)\b", RegexOptions.IgnoreCase))
+            if (Regex.IsMatch(userInput, @"\b(topic|subject)\b", RegexOptions.IgnoreCase))
             {
                 HandleTopic();
                 return;
@@ -155,12 +176,39 @@ namespace ChatBot_POE
                 return;
             }
 
+            if (Regex.IsMatch(userInput, @"\b(task|job|chore)\b", RegexOptions.IgnoreCase))
+            {
+                HandleTask();
+                return;
+            }
+
+            if(Regex.IsMatch(userInput, @"\b(show my tasks)\b", RegexOptions.IgnoreCase))
+            {
+                AppendToChat("Here is a list of all your tasks");
+                string fileContent = File.ReadAllText(filePathTask);
+                AppendToChat($"{fileContent}");
+                ContinueQuestion();
+                return;
+            }
+
+            if (Regex.IsMatch(userInput, @"\b(show my preferences|show my user preferences)\b", RegexOptions.IgnoreCase))
+            {
+                AppendToChat("Here is a list of all your preferences");
+                string fileContent = File.ReadAllText(filePathPreferences);
+                AppendToChat($"{fileContent}");
+                ContinueQuestion();
+                return;
+            }
+
+
+
             if (Regex.IsMatch(userInput, @"\b(exit|goodbye|leaving|bye)\b", RegexOptions.IgnoreCase))
             {
                 AppendToChat($"Goodbye {userName}!");
                 Close();
                 return;
             }
+
 
             else
             {
@@ -191,9 +239,9 @@ namespace ChatBot_POE
             var matchingRecords = lib.data.Where(x => questionArray.Contains(x.Subject.ToLower()) || questionArray.Intersect(x.Tags.ToLower().Split(',')).Count() > 0).OrderBy(x => Guid.NewGuid());
 
             // Check for remembered preferences
-            if (File.Exists(filepath))
+            if (File.Exists(filePathPreferences))
             {
-                using (StreamReader readFile = new StreamReader(filepath))
+                using (StreamReader readFile = new StreamReader(filePathPreferences))
                 {
                     string read = readFile.ReadLine();
                     if (!string.IsNullOrEmpty(read))
@@ -307,7 +355,7 @@ namespace ChatBot_POE
         private void AskForMoreConcerns()
         {
             waitingForConcernResponse = true;
-            AppendToChat($"\nDo you have any other concerns? (yes/no)");
+            AppendToChat($"\nDo you have any other concerns?");
             
         }
 
@@ -346,7 +394,7 @@ namespace ChatBot_POE
         private void ProcessTopic(string topic)
         {
             waitForTopic = false;
-            File.AppendAllText(filepath, $"{topic},");
+            File.AppendAllText(filePathPreferences, $"{topic},");
             AppendToChat($"Thanks for letting me know {userName}! I'll remember that for next time");
             AskForMoreTopics();
         }
@@ -354,7 +402,7 @@ namespace ChatBot_POE
         private void AskForMoreTopics()
         {
             waitForMoreTopic=true;
-            AppendToChat("Do you have any more topics i should remember? (yes/no)");
+            AppendToChat("Do you have any more topics i should remember?");
         }
 
         private void ProcessMoreTopic(string response)
@@ -377,6 +425,113 @@ namespace ChatBot_POE
             }
         }
 
+
+
+
+
+
+
+        // task creation
+        private void HandleTask()
+        {
+            waitForTaskTitle=true;
+            AppendToChat("what is the title of the task?");
+        }
+
+
+        private void ProcessTask(string userInput)
+        {
+
+            
+
+            if (waitForTaskTitle==true)
+            {
+                
+                taskTitle = userInput;
+                waitForTaskTitle = false;
+                waitForTaskDescription = true;
+                AppendToChat("What is the description of the task?");
+                return;
+            }
+            if (waitForTaskDescription==true)
+            {
+                taskDescription = userInput;
+                waitForTaskDescription = false;
+                waitForTaskReminder = true;  
+                AppendToChat("Would you like a reminder?");
+                return;
+            }
+            if (waitForTaskReminder==true)
+            {
+                if (Regex.IsMatch(userInput, @"\b(yep|yea|affirmative|aye|yes)\b", RegexOptions.IgnoreCase))
+                {
+                    waitForTaskReminder = false;   
+                    waitForTaskReminderTime = true;
+                    AppendToChat("when should i remind you?");
+                    return;
+     
+                }
+                else if (Regex.IsMatch(userInput, @"\b(nah|nope|no|negative)\b", RegexOptions.IgnoreCase))
+                {
+                    File.AppendAllText(filePathTask, $"Title: {taskTitle}\nDescription: {taskDescription}\nReminder: No\n\n");
+                    waitForTaskReminder = false;
+                    AppendToChat("Task has been set without a time");
+                    ResetTaskState();
+                    AskForMoreTasks();
+                    return;
+                }    
+            }
+
+            if (waitForTaskReminderTime == true)
+            {
+                taskTime = userInput;
+                File.AppendAllText(filePathTask, $"Title: {taskTitle}\nDescription: {taskDescription}\nReminder: yes \nReminder Time:{taskTime}\n\n");
+                waitForTaskReminder = false;
+                AppendToChat($"Task has been set with a time: {taskTime}");
+                ResetTaskState();
+                AskForMoreTasks();
+                return;
+            }
+
+            
+        }
+
+        private void AskForMoreTasks()
+        {
+            waitForMoreTasks = true;
+            AppendToChat("Do you have any more tasks you want to save?");
+        }
+
+        private void ProcessMoreTasks(string response)
+        {
+            waitForMoreTasks = false;
+            response = response.ToLower();
+
+            if (Regex.IsMatch(response, @"\b(nah|nope|no|negative)\b", RegexOptions.IgnoreCase))
+            {
+                ContinueQuestion();
+            }
+            else if (Regex.IsMatch(response, @"\b(yep|yea|affirmative|aye|yes)\b", RegexOptions.IgnoreCase))
+            {
+                HandleTask();
+            }
+            else
+            {
+                AppendToChat("I didn't understand that.");
+                AskForMoreTasks();
+            }
+        }
+
+        private void ResetTaskState()
+        {
+            waitForTaskTitle = false;
+            waitForTaskDescription = false;
+            waitForTaskReminder = false;
+            waitForTaskReminderTime = false;
+            taskTitle = "";
+            taskDescription = "";
+            taskTime = "";
+        }
 
 
         //used to display to the textbox
