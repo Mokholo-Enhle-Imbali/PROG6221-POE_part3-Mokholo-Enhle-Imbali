@@ -21,7 +21,7 @@ namespace ChatBot_POE
 
             try //for password safety
             {
-                passwordSReader = new StreamReader("C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\prog6221-poe-Mokholo-Enhle-Imbali\\PasswordSafety.txt");
+                passwordSReader = new StreamReader("C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\PROG6221-POE_part3-Mokholo-Enhle-Imbali\\PasswordSafety.txt");
                 passwordSafety = passwordSReader.ReadLine(); //this is the string containing the specifc data
 
                 if (passwordSafety != null)
@@ -52,7 +52,7 @@ namespace ChatBot_POE
 
             try //for phishing
             {
-                phishingReader = new StreamReader("C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\prog6221-poe-Mokholo-Enhle-Imbali\\Phishing.txt");
+                phishingReader = new StreamReader("C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\PROG6221-POE_part3-Mokholo-Enhle-Imbali\\Phishing.txt");
                 phishing = phishingReader.ReadLine();
 
 
@@ -90,7 +90,7 @@ namespace ChatBot_POE
 
             try //for safe browsing
             {
-                safeBrowsingReader = new StreamReader("C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\prog6221-poe-Mokholo-Enhle-Imbali\\SafeBrowsing.txt");
+                safeBrowsingReader = new StreamReader("C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\PROG6221-POE_part3-Mokholo-Enhle-Imbali\\SafeBrowsing.txt");
                 safeBrowsing = safeBrowsingReader.ReadLine();
 
 

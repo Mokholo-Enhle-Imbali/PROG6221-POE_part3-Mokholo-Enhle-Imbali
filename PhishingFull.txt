@@ -1,0 +1,13 @@
+Phishing is a type of social engineering attack, that targets systems using human error, fake stories, or pressure tactics.
+In a phishing attack, the attacker pretends to be someone that the victim trusts such as a colleague or an authority figure. The attacker then coerces the victim into doing an action such as sending money or open a malicious attachment. 
+
+There are 3 types of phishing: 
+Bulk Email phishing: this is when attackers send phishing emails regardless of who the target is. Attackers tend to make the email look believable, by making it seem like it is from a legit company.
+
+Spear Phishing: unlike bulk phishing, spear phishing targets individuals. These individuals are usually high-ranking individuals such as CEOs or people with access to sensitive info. The attacker usually studies the victim (i.e. gathers the relevant information about the victim) and then poses as someone the victim trusts. 
+
+Business Email Compromise (BEC):BECs are phishing attacks that target a specific business or organization in order to gain sensitive information such as business secrets. There are many types of BECs, however the two most common are:
+ 
+CEO Fraud: the attacker poses as an executive, by hacking into said executive's account. The attacker then sends an email to lower employees, telling them to transfer funds or information.
+
+Email Account Compromise (EAC):This is when the attacker poses as an employee, such as a manager, and sends fraudulent invoices to customers.
