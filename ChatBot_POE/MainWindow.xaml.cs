@@ -1,211 +1,389 @@
-﻿using System.IO;
-using System.Text;
+﻿using System;
+using System.IO;
+using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Media.Media3D;
 
 namespace ChatBot_POE
 {
-    /// <summary>
-    /// Interaction logic for MainWindow.xaml
-    /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly string customMemoryPath = "C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\PROG6221-POE_part3-Mokholo-Enhle-Imbali\\ChatBot_POE";
+        private Library lib; // Content for short questions
+        private LibraryLong libraryLong; // Content for longer explanations
+        private SentimentLibrary sentimentLibrary; // Sentiment detection
+        private string userName;
+        private string filepath = "C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\PROG6221-POE_part3-Mokholo-Enhle-Imbali\\UserPreferences.txt";
+        Image image = new Image();
+        AudioPlayer audioPlayer = new AudioPlayer();
+        private bool waitingForQuestion = false;
+        private bool waitingForResponse = false;
+        private bool waitingForConcern = false;
+        private bool waitingForConcernResponse = false;
+        bool waitForTopic = false;
+        bool waitForMoreTopic=false;
         public MainWindow()
         {
             InitializeComponent();
-            AudioPlayer player = new AudioPlayer();
-            player.Play();
-            Image image = new Image();
-            string art = image.Show();
-            string welcome = "Chat: Welcome to CyberBot! your one stop bot for all things cybersecurity! Before we get started, could you please tell me your name?";
-
-            chatbotoutput.Text = $"{art}\n{welcome}";
+            audioPlayer.Play();
+            chatbotoutput.Text = image.Show();
+            InitializeChatbot();
         }
 
-        private string userName;
-        private bool confirmName = false;
-        private bool confirmGreeting = false;
-        private bool confirmAskingQuestion = false;
-        private bool anyMoreQuestions = false;
-        private bool confirmMemory = false;
+        private void InitializeChatbot()
+        {
+            lib = new Library();
+            lib.LoadData();
+
+            libraryLong = new LibraryLong();
+            libraryLong.LoadData();
+
+            sentimentLibrary = new SentimentLibrary();
+            sentimentLibrary.Responses();
+
+            AppendToChat("Welcome to CyberBot! Your one stop bot for all things cybersecurity! Before we get started, could you please tell me your name?");
+        }
+
         private void send_Click(object sender, RoutedEventArgs e)
         {
-            Library lib = new Library(); //content for short questions
-            lib.LoadData(); //loading the data
-
-            string input = txtchat.Text.Trim();
+            string userInput = txtchat.Text.Trim();
             txtchat.Clear();
 
+            if (string.IsNullOrEmpty(userInput))
+                return;
 
+            AppendToChat($"{userInput}");
 
-            if (string.IsNullOrEmpty(input))
+            if (waitingForQuestion)
             {
-                chatbotoutput.Text += "\nPlease enter your name.";
+                ProcessQuestion(userInput);
                 return;
             }
 
-            if (!confirmName)
+            if (waitingForResponse)
             {
-                userName = input;
-                chatbotoutput.Text += $"\nWelcome {userName}, it is nice to meet you!\n\nPlease say 'hello' to continue.";
-                confirmName = true;
+                ProcessResponse(userInput);
                 return;
             }
 
-            if (!confirmGreeting)
+            if (waitingForConcern)
             {
-                if (input.Equals("hello", StringComparison.OrdinalIgnoreCase) ||
-                    input.Equals("hi", StringComparison.OrdinalIgnoreCase))
-                {
-                    chatbotoutput.Text += "\n\nWhat would you like to do today? \n- Ask a question \n- Exit \n- remember a topic i like";
-                    confirmGreeting = true;
-                }
-                else
-                {
-                    chatbotoutput.Text += "\nPlease say 'hello' first!";
-                }
+                ProcessConcern(userInput);
                 return;
             }
 
-            if (input.Equals("ask a question", StringComparison.OrdinalIgnoreCase))
+            if (waitingForConcernResponse)
             {
-                chatbotoutput.Text += "\n\nChat: What's your question about cybersecurity?";
-                confirmAskingQuestion = true;
+                ProcessConcernResponse(userInput);
                 return;
             }
-            else if (input.Equals("exit", StringComparison.OrdinalIgnoreCase))
+
+            if (waitForTopic)
             {
+                ProcessTopic(userInput);
+                return;
+            }
+
+            if (waitForMoreTopic) 
+            {
+                ProcessMoreTopic(userInput);
+                return;
+            }
+
+
+            if (string.IsNullOrEmpty(userName))
+            {
+                HandleUserNameInput(userInput);
+            }
+            else
+            {
+                HandleUserInput(userInput.ToLower());
+            }
+        }
+
+        private void HandleUserNameInput(string input)
+        {
+            userName = input;
+            AppendToChat($"Hello {userName} I am chatbot!");
+            ShowMainOptions();
+        }
+
+        private void ShowMainOptions()
+        {
+            AppendToChat($"What would you like to do today {userName}?\n");
+        }
+
+        private void ContinueQuestion()
+        {
+            AppendToChat($"What else would you like to talk about {userName}?\n");
+        }
+
+        private void HandleUserInput(string userInput)
+        {
+
+
+            if (Regex.IsMatch(userInput, @"\b(ask|question|query)\b", RegexOptions.IgnoreCase))
+            {
+                HandleQuestion();
+                return;
+            }
+
+            if (Regex.IsMatch(userInput, @"\b(concerned|worried|stressed|anxious|uneasy)\b", RegexOptions.IgnoreCase))
+            {
+                HandleConcern();
+                return;
+            }
+
+            if (Regex.IsMatch(userInput, @"\b(remember|don't forget|recollect)\b", RegexOptions.IgnoreCase))
+            {
+                HandleTopic();
+                return;
+            }
+
+            if (Regex.IsMatch(userInput, @"\b(open|pod|bay|door)\b", RegexOptions.IgnoreCase))
+            {
+                AppendToChat("I'm afraid I cannot do that hal...");
+                ContinueQuestion();
+                return;
+            }
+
+            if (Regex.IsMatch(userInput, @"\b(what|funcionality|purpose)\b", RegexOptions.IgnoreCase))
+            {
+                AppendToChat("My purpose is to answer any questions you have about cybersecurity. " +
+                           "For now, you can ask me about phishing, password safety, and safe browsing.");
+                ContinueQuestion();
+                return;
+            }
+
+            if (Regex.IsMatch(userInput, @"\b(exit|goodbye|leaving|bye)\b", RegexOptions.IgnoreCase))
+            {
+                AppendToChat($"Goodbye {userName}!");
                 Close();
                 return;
             }
 
-            if (input.Equals("remember a topic i like", StringComparison.OrdinalIgnoreCase))
+            else
             {
-                chatbotoutput.Text += "\n\nWhat would you like me to remember?";
-                confirmMemory = true;
-                return;
+                AppendToChat("can you repeat that? i dont think i understood");
             }
 
+        }
+        
 
+        //questions about cybersecurity
+        private void HandleQuestion()
+        {
+            waitingForQuestion = true;
+            AppendToChat("What question would you like to ask me?");
+        }
+         
+       
 
-            if (confirmAskingQuestion)
+        private void ProcessQuestion(string userInput)
+        {
+            waitingForQuestion = false;
+            AppendToChat($"{userName}: {userInput}");
+
+            bool contentFound = false;
+            var questionArray = userInput.ToLower().Split(' ');
+
+            // Check short questions
+            var matchingRecords = lib.data.Where(x => questionArray.Contains(x.Subject.ToLower()) || questionArray.Intersect(x.Tags.ToLower().Split(',')).Count() > 0).OrderBy(x => Guid.NewGuid());
+
+            // Check for remembered preferences
+            if (File.Exists(filepath))
             {
-                var questionArray = input.ToLower().Split(' ');
-                var matchingRecords = lib.data
-                    .Where(x => questionArray.Contains(x.Subject.ToLower()) ||
-                                 questionArray.Intersect(x.Tags.ToLower().Split(',')).Any())
-                    .OrderBy(x => Guid.NewGuid())
-                    .ToList();
-
-                if (matchingRecords.Any())
+                using (StreamReader readFile = new StreamReader(filepath))
                 {
-                    chatbotoutput.Text += $"\n\n{matchingRecords.First().Content}";
-                }
-                else
-                {
-                    chatbotoutput.Text += "\n\nI don't have information on that topic. Try asking about something else.";
-                }
-
-                chatbotoutput.Text += "\n\nDo you have any other questions? (yes/no)";
-                anyMoreQuestions = true;
-                confirmAskingQuestion = false;
-                return;
-            }
-
-            if (anyMoreQuestions)
-            {
-                if (input.Equals("yes", StringComparison.OrdinalIgnoreCase))
-                {
-                    chatbotoutput.Text += "\n\nWhat is your next question?";
-                    confirmAskingQuestion = true;
-                    anyMoreQuestions = false;
-                }
-                else if (input.Equals("no", StringComparison.OrdinalIgnoreCase))
-                {
-                    chatbotoutput.Text += "\n\nOkay, let me know if you need anything else!\n\nWhat would you like to do today? \n- Ask a question \n- Exit \n- remember a topic i like";
-                    anyMoreQuestions = false;
-                    confirmGreeting = true; // Return to main menu
-                }
-                else
-                {
-                    chatbotoutput.Text += "\n\nPlease answer 'yes' or 'no'.";
-                }
-                return;
-            }
-
-            if (confirmMemory)
-            {
-                if (confirmMemory)
-                {
-                    try
+                    string read = readFile.ReadLine();
+                    if (!string.IsNullOrEmpty(read))
                     {
-                        // Get the directory path
-                        string directory = System.IO.Path.GetDirectoryName(customMemoryPath);
-
-                        // Create directory if it doesn't exist
-                        if (!Directory.Exists(directory))
+                        string[] safeBrowsingOptions = read.Split(',');
+                        foreach (var record in matchingRecords)
                         {
-                            Directory.CreateDirectory(directory);
-                        }
-
-                        // Write the file
-                        File.WriteAllText(customMemoryPath, input);
-
-                        // Verify
-                        if (File.Exists(customMemoryPath))
-                        {
-                            string savedText = File.ReadAllText(customMemoryPath);
-                            chatbotoutput.Text += $"\n\nI'll remember: {savedText}";
-
-                            // Show confirmation (optional)
-                            MessageBox.Show($"Successfully saved to:\n{customMemoryPath}");
-                        }
-                        else
-                        {
-                            chatbotoutput.Text += "\n\nError: File wasn't created!";
+                            if (safeBrowsingOptions.Any(item =>
+                                record.Tags.ToLower().Contains(item.ToLower()) ||
+                                record.Subject.ToLower().Contains(item.ToLower())))
+                            {
+                                AppendToChat("I remember you said you like this topic!");
+                                break;
+                            }
                         }
                     }
-                    catch (Exception ex)
-                    {
-                        chatbotoutput.Text += $"\n\nSave failed: {ex.Message}";
-
-                        // Fallback to AppData if needed
-                        string fallbackPath = System.IO.Path.Combine(
-                            Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData),
-                            "ChatBot_POE",
-                            "memory.txt");
-
-                        File.WriteAllText(fallbackPath, input);
-                        chatbotoutput.Text += $"\n(Saved to fallback location instead)";
-                    }
-
-                    confirmMemory = false;
-                    return;
                 }
+            }
 
+            // Display matching short answers
+            foreach (var record in matchingRecords)
+            {
+                AppendToChat($"{record.Content}");
+                contentFound = true;
+                break;
+            }
 
-                chatbotoutput.Text += "\n\nI didn't understand that. Please choose one of the options:\n- Ask a question \n- Exit \n- remeber a topic i like";
+            // Check long questions
+            var matchingLongRecords = libraryLong.dataLong.Where(x =>
+                questionArray.Contains(x.SubjectLong.ToLower()) ||
+                questionArray.Intersect(x.TagsLong.ToLower().Split(',')).Any());
+
+            foreach (var record in matchingLongRecords)
+            {
+                AppendToChat($"{record.ContentLong}");
+                contentFound = true;
+            }
+
+            if (!contentFound)
+            {
+                AppendToChat("Sorry, I couldn't find anything related to your question.");
+            }
+
+            AskForMoreQuestions();
+        }
+
+        private void AskForMoreQuestions()
+        {
+            waitingForResponse = true;
+            AppendToChat($"\nDo you have any other questions?");
+        }
+
+        private void ProcessResponse(string response)
+        {
+            waitingForResponse = false;
+            response = response.ToLower();
+
+            if (Regex.IsMatch(response, @"\b(nah|nope|no|negative)\b", RegexOptions.IgnoreCase))
+            {
+                ContinueQuestion();
+            }
+            else if (Regex.IsMatch(response, @"\b(yep|yea|affirmative|aye|yes)\b", RegexOptions.IgnoreCase))
+            {
+                HandleQuestion();
+            }
+            else
+            {
+                AppendToChat("I didn't understand that");
+                AskForMoreQuestions();
             }
         }
 
-        private string LoadRememberedTopic()
-        {
-            string appDataPath = Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData);
-            string filePath = System.IO.Path.Combine(appDataPath, "ChatBot_POE", "memory.txt");
 
-            if (File.Exists(filePath))
+
+
+        //sentiment feature
+        private void HandleConcern()
+        {
+            waitingForConcern = true;
+            AppendToChat("What specifically are you worried about?");
+        }
+
+        private void ProcessConcern(string userInput)
+        {
+            waitingForConcern = false;
+            AppendToChat($"{userInput}");
+
+            bool content = false;
+            var sentimentData = sentimentLibrary.DataSentiment;
+            var sentimentArray = userInput.ToLower().Split(' ');
+            var records = sentimentData.Where(x => sentimentArray.Contains(x.sentimentSubject.ToLower()) || sentimentArray.Intersect(x.sentimentTags.ToLower().Split(',')).Count() > 0);
+            foreach (var recordsentiment in records)
             {
-                return File.ReadAllText(filePath);
+                if (recordsentiment != null)
+                {
+
+                    AppendToChat($"{recordsentiment.sentimentContent}");
+                    content = true;
+                   
+                }
             }
-            return null;
+            if (!content)
+            {
+                AppendToChat("sorry, I couldn't find anything related to your question.");
+            }
+
+            AskForMoreConcerns();
+
+        }
+
+        private void AskForMoreConcerns()
+        {
+            waitingForConcernResponse = true;
+            AppendToChat($"\nDo you have any other concerns? (yes/no)");
+            
+        }
+
+        private void ProcessConcernResponse(string response)
+        {
+            waitingForConcernResponse = false;
+            response = response.ToLower();
+
+            if (Regex.IsMatch(response, @"\b(nah|nope|no|negative)\b", RegexOptions.IgnoreCase))
+            {   
+                ContinueQuestion();
+            }
+            else if (Regex.IsMatch(response, @"\b(yep|yea|affirmative|aye|yes)\b", RegexOptions.IgnoreCase))
+            {
+                HandleConcern();
+            }
+            else
+            {
+                AppendToChat("I didn't understand that.");
+                AskForMoreConcerns();
+            }
+        }
+
+
+
+
+
+
+        //remember topic i like
+        private void HandleTopic()
+        {
+            waitForTopic=true;
+            AppendToChat("What topic do you want me to remember?");
+        }
+
+        private void ProcessTopic(string topic)
+        {
+            waitForTopic = false;
+            File.AppendAllText(filepath, $"{topic},");
+            AppendToChat($"Thanks for letting me know {userName}! I'll remember that for next time");
+            AskForMoreTopics();
+        }
+
+        private void AskForMoreTopics()
+        {
+            waitForMoreTopic=true;
+            AppendToChat("Do you have any more topics i should remember? (yes/no)");
+        }
+
+        private void ProcessMoreTopic(string response)
+        {
+            waitForMoreTopic = false;
+            response = response.ToLower();
+
+            if (Regex.IsMatch(response, @"\b(nah|nope|no|negative)\b", RegexOptions.IgnoreCase))
+            {
+                ContinueQuestion();
+            }
+            else if (Regex.IsMatch(response, @"\b(yep|yea|affirmative|aye|yes)\b", RegexOptions.IgnoreCase))
+            {
+                HandleConcern();
+            }
+            else
+            {
+                AppendToChat("I didn't understand that. Please answer with 'yes' or 'no'.");
+                AskForMoreTopics();
+            }
+        }
+
+
+
+        //used to display to the textbox
+
+        private void AppendToChat(string text)
+        {
+            chatbotoutput.Text += text + "\n\n";
         }
     }
 }
