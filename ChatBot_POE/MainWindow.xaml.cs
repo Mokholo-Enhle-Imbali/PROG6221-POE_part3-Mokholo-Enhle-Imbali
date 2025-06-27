@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
@@ -16,6 +17,7 @@ namespace ChatBot_POE
         private string userName;
         private string filePathPreferences = "C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\PROG6221-POE_part3-Mokholo-Enhle-Imbali\\UserPreferences.txt";
         private string filePathTask = "C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\PROG6221-POE_part3-Mokholo-Enhle-Imbali\\Tasks.txt";
+        private string filePathLogger = "C:\\Users\\enhle\\OneDrive\\Desktop\\GitHub\\PROG6221-POE_part3-Mokholo-Enhle-Imbali\\ChatLogs.txt";
         Image image = new Image();
         AudioPlayer audioPlayer = new AudioPlayer();
         private bool waitingForQuestion = false;
@@ -32,6 +34,10 @@ namespace ChatBot_POE
         private string taskDescription = "";
         private string taskTime = "";
         private bool waitForMoreTasks = false;
+        private bool waitForQuiz=false;
+        int answerCounter = 0;
+        int currentQuestionIndex = 0;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -62,6 +68,7 @@ namespace ChatBot_POE
             if (string.IsNullOrEmpty(userInput))
                 return;
 
+            
             AppendToChat($"{userInput}");
 
             if (waitingForQuestion==true)
@@ -112,6 +119,12 @@ namespace ChatBot_POE
                 return;
             }
 
+            if (waitForQuiz == true)
+            {
+                ProcessQuiz(userInput);
+                return;
+            }
+
             if (string.IsNullOrEmpty(userName))
             {
                 HandleUserNameInput(userInput);
@@ -145,24 +158,28 @@ namespace ChatBot_POE
 
             if (Regex.IsMatch(userInput, @"\b(ask|question|query)\b", RegexOptions.IgnoreCase))
             {
+                Logger(userInput, "user wanted chatbot to answer questions about cybersecurity");
                 HandleQuestion();
                 return;
             }
 
             if (Regex.IsMatch(userInput, @"\b(concerned|worried|stressed|anxious|uneasy)\b", RegexOptions.IgnoreCase))
             {
+                Logger(userInput, "user wanted chatbot to ease worries/concerns about a topic in cybersecurity");
                 HandleConcern();
                 return;
             }
 
             if (Regex.IsMatch(userInput, @"\b(topic|subject)\b", RegexOptions.IgnoreCase))
             {
+                Logger(userInput,"User asked chatbot to save a topic that they like");
                 HandleTopic();
                 return;
             }
 
             if (Regex.IsMatch(userInput, @"\b(open|pod|bay|door)\b", RegexOptions.IgnoreCase))
             {
+                Logger(userInput, "user waned chatbot to tell a funny joke");
                 AppendToChat("I'm afraid I cannot do that hal...");
                 ContinueQuestion();
                 return;
@@ -170,6 +187,7 @@ namespace ChatBot_POE
 
             if (Regex.IsMatch(userInput, @"\b(what|funcionality|purpose)\b", RegexOptions.IgnoreCase))
             {
+                Logger(userInput, "user asked chatbot about what it can do");
                 AppendToChat("My purpose is to answer any questions you have about cybersecurity. " +
                            "For now, you can ask me about phishing, password safety, and safe browsing.");
                 ContinueQuestion();
@@ -178,12 +196,14 @@ namespace ChatBot_POE
 
             if (Regex.IsMatch(userInput, @"\b(task|job|chore)\b", RegexOptions.IgnoreCase))
             {
+                Logger(userInput, "user wanted to create a task for the user");
                 HandleTask();
                 return;
             }
 
-            if(Regex.IsMatch(userInput, @"\b(show my tasks)\b", RegexOptions.IgnoreCase))
+            if(Regex.IsMatch(userInput, @"\b(show my tasks|show a list of tasks|list tasks|show tasks)\b", RegexOptions.IgnoreCase))
             {
+                Logger(userInput, "user wanted chatbot to show a list of all the tasks they need to do");
                 AppendToChat("Here is a list of all your tasks");
                 string fileContent = File.ReadAllText(filePathTask);
                 AppendToChat($"{fileContent}");
@@ -191,8 +211,16 @@ namespace ChatBot_POE
                 return;
             }
 
-            if (Regex.IsMatch(userInput, @"\b(show my preferences|show my user preferences)\b", RegexOptions.IgnoreCase))
+            if (Regex.IsMatch(userInput, @"\b(quiz|quizzes)\b", RegexOptions.IgnoreCase))
             {
+                Logger(userInput, "user wanted the chatbot to quiz them on a cybersecurity topics");
+                HandleQuiz();
+                return;
+            }
+
+            if (Regex.IsMatch(userInput, @"\b(preferences| user preferences)\b", RegexOptions.IgnoreCase))
+            {
+                Logger(userInput,"user wanted chatbot to list all their topics they like");
                 AppendToChat("Here is a list of all your preferences");
                 string fileContent = File.ReadAllText(filePathPreferences);
                 AppendToChat($"{fileContent}");
@@ -200,9 +228,15 @@ namespace ChatBot_POE
                 return;
             }
 
+            if (Regex.IsMatch(userInput, @"\b(logs|previous chats)\b", RegexOptions.IgnoreCase))
+            {
+                ShowLogs();
+                ContinueQuestion();
+                return;
+            }
 
 
-            if (Regex.IsMatch(userInput, @"\b(exit|goodbye|leaving|bye)\b", RegexOptions.IgnoreCase))
+            if (Regex.IsMatch(userInput, @"\b(exit|goodbye|leaving|bye|nothing)\b", RegexOptions.IgnoreCase))
             {
                 AppendToChat($"Goodbye {userName}!");
                 Close();
@@ -381,9 +415,6 @@ namespace ChatBot_POE
 
 
 
-
-
-
         //remember topic i like
         private void HandleTopic()
         {
@@ -416,7 +447,7 @@ namespace ChatBot_POE
             }
             else if (Regex.IsMatch(response, @"\b(yep|yea|affirmative|aye|yes)\b", RegexOptions.IgnoreCase))
             {
-                HandleConcern();
+                HandleTopic();
             }
             else
             {
@@ -534,11 +565,277 @@ namespace ChatBot_POE
         }
 
 
+
+
+
+
+        private void HandleQuiz()
+        {
+            
+            AppendToChat("Ok lets go!");
+            AppendToChat("First question:\n how can one make their password safer?\nA: adding more characters (symbols and numbers) \nB: expose the password to a random person \nC: re use paswords");
+            currentQuestionIndex = 0;
+            answerCounter = 0;
+            waitForQuiz = true;
+        }
+
+
+        private void ProcessQuiz(string userInput)
+        {
+
+            string answer = userInput.ToLower();
+            switch (currentQuestionIndex)
+            {
+                case 0:
+                    switch (answer)
+                    {
+                        case "a":
+                            AppendToChat("Thats correct! Many attackers cycle through generic passwords. By adding symbols and numbers to your password, it makes the password more complex.");
+                            answerCounter++;
+                            break;
+
+                        case "b":
+                        case "c":
+                            AppendToChat($"I afraid that is incorrect. the right answer is A. \nBy adding symbols and numbers to your password, it makes the password more complex.");
+                            break;
+
+                        default:
+                            AppendToChat("Please answer the question");
+                            return;
+                    }
+                    AppendToChat("Second question: \nhow can one browse the web safely? \nA: click on an http//: website \nB: use a public wifi \nC: click on websites with https//: at the start");
+                    currentQuestionIndex++;
+                    break;
+
+                case 1:
+
+
+                    switch (answer)
+                    {
+                        case "a":
+                        case "b":
+                            AppendToChat($"I afraid that is incorrect. the right answer is C. clicking on websites that have https at the start are more safer than the ones with http only");
+                            break;
+                        case "c":
+                            AppendToChat("Thats correct! clicking on websites that have https at the start are more safer than the ones with http only.");
+                            answerCounter++;
+                            break;
+
+                        default:
+                            AppendToChat("Please answer the question");
+                            return;
+                    }
+                    AppendToChat("Third Question: \nWhat is a great way to identify a phishing scam? \nA: clicking on the links from unsolicited emails \nB: checking the email address of the sender \nC: Believing what the email says");
+                    currentQuestionIndex++;
+                    break;
+
+                    case 2:
+
+                    switch (answer)
+                    {
+                        case "a":
+                        case "c":
+                            AppendToChat($"I afraid that is incorrect. the right answer is B. always make sure to see who is sending an email to you");
+                            break;
+                            case "b":
+                            AppendToChat("thats correct! always make sure to see who is sending an email to you");
+                            answerCounter++;
+                            break;
+
+                        default:
+                            AppendToChat("Please answer the question");
+                            return;
+                    }
+                    AppendToChat("Fourth Question: \nTrue or false:  you should always share your password with anyone who asks");
+                    currentQuestionIndex++;
+                    break;
+
+                    case 3:
+                    switch (answer)
+                    {
+                        case "true":
+                            AppendToChat("I'm afraid that is incorect. you should never share your password with anyone, especially online. only people you know");
+                            break;
+                        case "false":
+                            AppendToChat("Thats correct! you should never share your password with anyone, especially online. only people you know");
+                            answerCounter++;
+                            break;
+
+                        default:
+                            AppendToChat("Please answer the question");
+                            return;
+                    }
+                    AppendToChat("Fifth Question: A random number calls you claiming it is your bank and asks for your card information. Do you give it to them? (answer yes/no)");
+                    currentQuestionIndex++;
+                    break;
+
+                    case 4:
+
+                    switch (answer)
+                    {
+                        case "yes":
+                            AppendToChat("I'm affraid that is incorrect. you must never share any details with random numbers. remember, the bank would never call you for personal information");
+                            break;
+
+                            case "no":
+                            AppendToChat("that is correct. you must never share any details with random numbers. remember, the bank would never call you for personal information");
+                            answerCounter++;
+                            break;
+
+                        default:
+                            AppendToChat("Please answer the question");
+                            return;
+                    }
+                    AppendToChat("Sixth Question: True or false. The bank will call you about suspicious activity on your card");
+                    currentQuestionIndex++;
+                    break;
+
+                    case 5:
+
+                    switch (answer)
+                    {
+                        case "true":
+                            AppendToChat("Correct! If the bank notices any strange purchases or even an exessive amount of money being spent, then they will contact you about it");
+                            answerCounter++;
+                            break;
+
+                            case "false":
+                            AppendToChat("Sorry, thats not correct. If the bank notices any strange purchases or even an exessive amount of money being spent, then they will contact you about it");
+                            break;
+
+                        default:
+                            AppendToChat("Please answer the question");
+                            return;
+                    }
+                    AppendToChat("Seventh Question: what is another way to ensure your safety even after someone steals your password? \nA: use the same username and password each time \nB: enable two-factor authentication \nC: give up and let them acces your personal info");
+                    currentQuestionIndex++;
+                    break;
+                    
+                    case 6:
+
+                    switch (answer)
+                    {
+                        case "a":
+                        case "c":
+                            AppendToChat("not correct. using 2FA makes it harder for attackers to acess your information.");
+                            break;
+
+                            case "b":
+                            AppendToChat("Thats right! using 2FA makes it harder for attackers to acess your information.");
+                            answerCounter++;
+                            break;
+
+                        default:
+                            AppendToChat("Please answer the question");
+                            return;
+                    }
+
+                    AppendToChat("Eighth Question: what is the purpose of antivirus software? \nA: it is used to protect against malicious software on your device \nB: cure to a bad case of the cold \nC: a waste of space");
+                    currentQuestionIndex++;
+                    break;
+
+                    case 7:
+
+                    switch (answer)
+                    {
+                        case "a":
+                            AppendToChat("yea! you got it! an antivirus software is used to protect you from malicious software and purge it if there is already malicious software on your device");
+                            answerCounter++;
+                            break;
+
+                            case "b":
+                            case "c":
+                            AppendToChat("Not quite! an antivirus software is used to protect you from malicious software and purge it if there is already malicious software on your device");
+                            break;
+
+                        default:
+                            AppendToChat("Please answer the question");
+                            return;
+                    }
+
+                    AppendToChat("Ninth Question: why is public wifi bad? \nA: cost to much \nB: there is barely any security, making it vulnerable. \nC: drains your battery ");
+                    currentQuestionIndex++;
+                    break;
+
+                case 8:
+
+                    switch (answer)
+                    {
+                        case "a":
+                        case "c":
+                            AppendToChat("im afraid that is incorrect. public Wi-Fis are known to be quite vulnerable, making it easy for attackers to ");
+                            break;
+
+                            case "b":
+                            AppendToChat("Thats right! public Wi-Fis are known to be quite vulnerable, making it easy for attackers to");
+                            answerCounter++;
+                            break;
+                    }
+
+                    AppendToChat("Final Question: How can you securely store a password? \nA: on a sticky note in the office \nB: on a random text file on your desktop \nC: with a password manager, such as google password manager");
+                    currentQuestionIndex++;
+                    break;
+
+                    case 9:
+
+                    switch (answer)
+                    {
+                        case "a":
+                        case "b":
+                            AppendToChat("Nope! password managers (like the google one mentioned) are known for being secure, as they encrypt your passwords using an encryption standards such as AES-256");
+                            break;
+
+                            case "c":
+                            AppendToChat("Thats right! password managers (like the google one mentioned) are known for being secure, as they encrypt your passwords using an encryption standards such as AES-256");
+                            answerCounter++;
+                            break;
+                    }
+
+                    currentQuestionIndex++;
+                    waitForQuiz = false;
+                    AppendToChat($"Your total score is {answerCounter}/10");
+
+                    if (answerCounter < 5)
+                    {
+                        AppendToChat("Don't worry you'll get it next time!");
+                    }
+                    else
+                    {
+                        AppendToChat("Great job, you are truly a cybersecurity expert");
+                    }
+
+                    ContinueQuestion();
+                    break;
+            }
+
+           
+
+
+
+        }
+
+
         //used to display to the textbox
 
         private void AppendToChat(string text)
         {
             chatbotoutput.Text += text + "\n\n";
         }
+
+
+        private void Logger(string userInput, string summary)
+        {
+            string logger = $"user asked: {userInput}\nSummary: {summary}\nTime Asked:{DateTime.Now}\n\n";
+            File.AppendAllText(filePathLogger, logger);
+        }
+
+        private void ShowLogs()
+        {
+            AppendToChat("Heres a log of all the chats: \n");
+            string fileContent = File.ReadAllText(filePathLogger);
+            AppendToChat($"{fileContent}");
+        }
+
+
     }
 }

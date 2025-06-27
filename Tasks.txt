@@ -16,3 +16,12 @@ Title: browse
 Description: find a new password
 Reminder: No
 
+Title: Safety
+Description: remember to practice password safety
+Reminder: yes 
+Reminder Time:in 3 Days
+
+Title: Safe browsing
+Description: remember to enable safe browsing
+Reminder: No
+
