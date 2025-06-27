@@ -25,3 +25,12 @@ Title: Safe browsing
 Description: remember to enable safe browsing
 Reminder: No
 
+Title: Cybersecurity
+Description: remember to create a safe password
+Reminder: yes 
+Reminder Time:3 Hours
+
+Title: Safe browsing
+Description: enable safe browsing
+Reminder: No
+

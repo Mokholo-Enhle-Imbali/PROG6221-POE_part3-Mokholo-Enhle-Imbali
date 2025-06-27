@@ -1,0 +1,61 @@
+
+user asked: i want to ask a question
+Summary: user wanted chatbot to answer questions about cybersecurity
+Time Asked:2025/06/27 14:22:25
+
+user asked: i want to create a task
+Summary: user wanted to create a task for the user
+Time Asked:2025/06/27 14:24:07
+
+user asked: show my tasks
+Summary: user wanted chatbot to show a list of all the tasks they need to do
+Time Asked:2025/06/27 14:25:25
+
+user asked: remember a topic i like
+Summary: User asked chatbot to save a topic that they like
+Time Asked:2025/06/27 14:25:49
+
+user asked: i want to ask a question
+Summary: user wanted chatbot to answer questions about cybersecurity
+Time Asked:2025/06/27 14:26:34
+
+user asked: can you quiz me
+Summary: user wanted the chatbot to quiz them on a cybersecurity topics
+Time Asked:2025/06/27 14:28:05
+
+user asked: i am stressed about something
+Summary: user wanted chatbot to ease worries/concerns about a topic in cybersecurity
+Time Asked:2025/06/27 14:29:46
+
+user asked: i am concerned about something
+Summary: user wanted chatbot to ease worries/concerns about a topic in cybersecurity
+Time Asked:2025/06/27 14:47:07
+
+user asked: i am worried about something
+Summary: user wanted chatbot to ease worries/concerns about a topic in cybersecurity
+Time Asked:2025/06/27 14:49:21
+
+user asked: concerned about something
+Summary: user wanted chatbot to ease worries/concerns about a topic in cybersecurity
+Time Asked:2025/06/27 14:56:49
+
+user asked: i am worried about somethig
+Summary: user wanted chatbot to ease worries/concerns about a topic in cybersecurity
+Time Asked:2025/06/27 15:00:20
+
+user asked: i am worried
+Summary: user wanted chatbot to ease worries/concerns about a topic in cybersecurity
+Time Asked:2025/06/27 15:03:49
+
+user asked: i am worried about something
+Summary: user wanted chatbot to ease worries/concerns about a topic in cybersecurity
+Time Asked:2025/06/27 15:10:46
+
+user asked: i am worried
+Summary: user wanted chatbot to ease worries/concerns about a topic in cybersecurity
+Time Asked:2025/06/27 15:16:36
+
+user asked: i am worried about something
+Summary: user wanted chatbot to ease worries/concerns about a topic in cybersecurity
+Time Asked:2025/06/27 15:18:58
+

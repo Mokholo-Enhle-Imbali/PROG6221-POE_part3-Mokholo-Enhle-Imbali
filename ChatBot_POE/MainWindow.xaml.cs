@@ -6,6 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Media.Media3D;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace ChatBot_POE
 {
@@ -68,8 +69,8 @@ namespace ChatBot_POE
             if (string.IsNullOrEmpty(userInput))
                 return;
 
-            
-            AppendToChat($"{userInput}");
+
+            AppendToUser(userName,userInput);
 
             if (waitingForQuestion==true)
             {
@@ -244,6 +245,7 @@ namespace ChatBot_POE
             }
 
 
+
             else
             {
                 AppendToChat("can you repeat that? i dont think i understood");
@@ -258,9 +260,6 @@ namespace ChatBot_POE
             waitingForQuestion = true;
             AppendToChat("What question would you like to ask me?");
         }
-         
-       
-
         private void ProcessQuestion(string userInput)
         {
             waitingForQuestion = false;
@@ -568,7 +567,7 @@ namespace ChatBot_POE
 
 
 
-
+        //quiz creation
         private void HandleQuiz()
         {
             
@@ -819,9 +818,13 @@ namespace ChatBot_POE
 
         private void AppendToChat(string text)
         {
-            chatbotoutput.Text += text + "\n\n";
+            chatbotoutput.Text += "Chat: "+text + "\n\n";
         }
 
+        private void AppendToUser(string userName, string userInput)
+        {
+            chatbotoutput.Text += userName +": " +userInput+ "\n\n";
+        }
 
         private void Logger(string userInput, string summary)
         {

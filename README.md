@@ -33,9 +33,16 @@ added a feature that allows the user to tell the chatbot about their concerns on
 # Memory Update: 
 The chatbot can now remember topics that the user likes and, when asking a question about that topic, the chatbot will state that it remembers that the user likes the topic
 
-# Activation Update
-To start using the chat bot, the user must first enter their name. Once they have entered their name, the chatbot will say: hello [name], to which the user must respond with either of the following responses: 
-"hi"
-"hello"
-"hi chatbot"
-"hello chatbot"
+# Changes during final part
+
+# NLP Update
+the chatbot can now naturally handle conversations by picking up on certain keywords within the user's input (Natural Language Processing)
+
+# Log update
+the chat bot can now also save what the user is asking, along with a summary of what the question is about and the timestamp
+
+# Quiz update
+there is now a feature where the chatbot will quiz you on cybersecurity. you just have to ask it to quiz you
+
+# wpf conversion
+the application is now a Windows Presentation Foundation application, making the interation between the user an chatbot smoother.
